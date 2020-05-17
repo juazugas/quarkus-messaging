@@ -20,8 +20,9 @@ public class SSEResource {
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @SseElementType(MediaType.TEXT_PLAIN)
-    public Multi<String> methodname(@PathParam("count") int count, @QueryParam("name") String name) {
-        return Multi.createFrom().ticks().every(Duration.ofSeconds(2))
+    public Multi<String> eventStreams(@PathParam("count") int count, @QueryParam("name") String name) {
+        return Multi.createFrom().ticks()
+                    .every(Duration.ofSeconds(2))
                     .onItem()
                     .apply(n -> String.format("hello %s - %d", name, n))
                     .transform().byTakingFirstItems(count);
